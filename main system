@@ -1,15 +1,23 @@
-balance = 0 / 1
-errorCounter = 0
+import openpyxl 
 
-accountNumber = int(input('Please enter your Account Number : '))
-if AtmDataAccount != accountNumber:
-    print('Your Account number is invalid')
-    errorCounter + 1
+wb = openpyxl.load_workbook("atmData.xlxs")
+sheet = wb.active
 
-pin = int(input("Please enter your Pin : "))
-if AtmDataPin != pin:
-    print('Your pin is invalid')
-    errorCounter + 1
+def dataCheck(accountNumber):
+    found = False
+    for row in sheet.iter_rows(values_only = True):
+        if accountNumber in row:
+            found = True
+            return True
+            break
+
+accountNumber = int(input('Please enter your account number: '))
+#checks if the account nummber exist in the system
+dataCheck(accountNumber)
+
+if dataCheck(accountNumber) == True:
+    userPin = int(input('Please enter your pin: '))
+    #checks if the pin is correct based in the data in the system
 
 while True:
     print('\n')
