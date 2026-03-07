@@ -1,0 +1,46 @@
+balance = 0 / 1
+errorCounter = 0
+
+accountNumber = int(input('Please enter your Account Number : '))
+if AtmDataAccount != accountNumber:
+    print('Your Account number is invalid')
+    errorCounter + 1
+
+pin = int(input("Please enter your Pin : "))
+if AtmDataPin != pin:
+    print('Your pin is invalid')
+    errorCounter + 1
+
+while True:
+    print('\n')
+    print('---------' * 5)
+    print("Welcome to the ATM")
+    print("1. Check deposit", "2. Deposit", "3. Withdraw", "4. Exit", sep='\n')
+    action = input('Please choose an option: ')
+
+    if action == '1':
+        print("Current Balance : Php", balance)
+    elif action == '2':
+        balance += int(input('\nPlease enter the value you want to Deposit: Php '))
+        print("Current Balance : Php", balance)
+    elif action == '3':     # withdraw
+        if balance < 18:
+            print('You are not able to withdraw since your balance is less than Php 18.0')
+            continue
+        else:
+            print('Your current balance will be deduced by Php 18.00')
+            withdraw = input("Do you still wish to withdraw? (yes/no) : ")
+            if withdraw == 'yes':
+                balance -= int(input('\nPlease enter the value you want to Withdraw: Php '))
+                balance -= 18
+                print("Current Balance : Php", balance)
+            elif withdraw == 'no':
+                continue
+            else:
+                print('Please enter a VALID response!!')
+                continue
+    elif action == '4':
+        print('Thank you!!')
+        break
+    else:
+        print("Please input a valid response 1 to 4")
