@@ -1,54 +1,62 @@
 import openpyxl 
 
-wb = openpyxl.load_workbook("atmData.xlxs")
+wb = openpyxl.load_workbook("atmData.xlsx")
 sheet = wb.active
 
-def dataCheck(accountNumber):
-    found = False
+def dataCheck(userAccountNumber):
     for row in sheet.iter_rows(values_only = True):
-        if accountNumber in row:
-            found = True
-            return True
-            break
+        if userAccountNumber == row[0]:
+            return {
+                "accountNumber" : row[0],
+                "pin" : row[1],
+                "balance" : row[2]
+            }
+    return None    
 
-accountNumber = int(input('Please enter your account number: '))
+
+userAccountNumber = int(input('Please enter your account number: '))
 #checks if the account nummber exist in the system
-dataCheck(accountNumber)
+userData = dataCheck(userAccountNumber)
 
-if dataCheck(accountNumber) == True:
-    userPin = int(input('Please enter your pin: '))
-    #checks if the pin is correct based in the data in the system
+if userData:
+    userPin = int(input('Please enter your PIN: '))
+    if userPin == userData["pin"]:
+    
+        while True:
+            print('\n')
+            print('---------' * 5)
+            print("Welcome to the ATM")
+            print("1. Check deposit", "2. Deposit", "3. Withdraw", "4. Exit", sep='\n')
+            action = input('Please choose an option: ')
 
-while True:
-    print('\n')
-    print('---------' * 5)
-    print("Welcome to the ATM")
-    print("1. Check deposit", "2. Deposit", "3. Withdraw", "4. Exit", sep='\n')
-    action = input('Please choose an option: ')
-
-    if action == '1':
-        print("Current Balance : Php", balance)
-    elif action == '2':
-        balance += int(input('\nPlease enter the value you want to Deposit: Php '))
-        print("Current Balance : Php", balance)
-    elif action == '3':     # withdraw
-        if balance < 18:
-            print('You are not able to withdraw since your balance is less than Php 18.0')
-            continue
-        else:
-            print('Your current balance will be deduced by Php 18.00')
-            withdraw = input("Do you still wish to withdraw? (yes/no) : ")
-            if withdraw == 'yes':
-                balance -= int(input('\nPlease enter the value you want to Withdraw: Php '))
-                balance -= 18
-                print("Current Balance : Php", balance)
-            elif withdraw == 'no':
-                continue
+            if action == '1':
+                print("Current Balance : Php", userData["balance"])
+            elif action == '2':
+                balance += int(input('\nPlease enter the value you want to Deposit: Php '))
+                print("Current Balance : Php", userData["balance"])
+            elif action == '3':     # withdraw
+                if userData["balance"] < 18:
+                    print('You are not able to withdraw since your balance is less than Php 18.0')
+                    continue
+                else:
+                    print('Your current balance will be deduced by Php 18.00')
+                    withdraw = input("Do you still wish to withdraw? (yes/no) : ")
+                    if withdraw == 'yes':
+                        userData["balance"] -= int(input('\nPlease enter the value you want to Withdraw: Php '))
+                        userData["balance"] -= 18
+                        print("Current Balance : Php", userData["balance"])
+                    elif withdraw == 'no':
+                        continue
+                    else:
+                        print('Please enter a VALID response!!')
+                        continue
+            elif action == '4':
+                print('Thank you!!')
+                break
             else:
-                print('Please enter a VALID response!!')
-                continue
-    elif action == '4':
-        print('Thank you!!')
-        break
-    else:
-        print("Please input a valid response 1 to 4")
+                print("Please input a valid response 1 to 4")
+
+        else :        
+            print('Incorrect PIN')
+else:
+    print('User not found!!')            
