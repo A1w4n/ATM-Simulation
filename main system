@@ -1,6 +1,6 @@
-import openpyxl 
+import openpyxl
 
-wb = openpyxl.load_workbook("atmData.xlsx")
+wb = openpyxl.load_workbook("C:\\Users\\orens\\Documents\\Coding Python\\ATM-Simulator\\atmData.xlsx")
 sheet = wb.active
 
 def dataCheck(userAccountNumber):
@@ -32,8 +32,11 @@ if userData:
             if action == '1':
                 print("Current Balance : Php", userData["balance"])
             elif action == '2':
-                balance += int(input('\nPlease enter the value you want to Deposit: Php '))
-                print("Current Balance : Php", userData["balance"])
+                temporary_UserDataBalance = userData["balance"] 
+                temporary_UserDataBalance += int(input('\nPlease enter the value you want to Deposit: Php '))
+                print("Current Balance : Php", temporary_UserDataBalance)
+                userData["balance"] = temporary_UserDataBalance
+                wb.save("C:\\Users\\orens\\Documents\\Coding Python\\ATM-Simulator\\atmData.xlsx")
             elif action == '3':     # withdraw
                 if userData["balance"] < 18:
                     print('You are not able to withdraw since your balance is less than Php 18.0')
@@ -42,8 +45,10 @@ if userData:
                     print('Your current balance will be deduced by Php 18.00')
                     withdraw = input("Do you still wish to withdraw? (yes/no) : ")
                     if withdraw == 'yes':
-                        userData["balance"] -= int(input('\nPlease enter the value you want to Withdraw: Php '))
-                        userData["balance"] -= 18
+                        temporary_UserDataBalance = userData["balance"]
+                        temporary_UserDataBalance -= int(input('\nPlease enter the value you want to Withdraw: Php '))
+                        userData["balance"] = temporary_UserDataBalance - 18.00
+                        wb.save("C:\\Users\\orens\\Documents\\Coding Python\\ATM-Simulator\\atmData.xlsx")
                         print("Current Balance : Php", userData["balance"])
                     elif withdraw == 'no':
                         continue
