@@ -1,15 +1,15 @@
 import openpyxl # for accessing the excel file
 import hashlib # for securing the pin number
-import os # for clearing the console
+import os # for storing the transaction history in a text file
 from datetime import datetime # for recording the transaction history
-
 
 # functions declaration and initialization
 def hash_pin(pin: str) -> str:
     return hashlib.sha256(pin.encode('utf-8')).hexdigest()
 
 def recorder(userAccountNumber, action, amount=None, balance=None, receipt = False):
-    filename = f"{userAccountNumber}_records.txt"
+    file_location = "C:\\Users\\orens\\Documents\\Coding Python\\ATM-Simulator"
+    filename = os.path.join (file_location, f"{userAccountNumber}_records.txt")
     timestamp = datetime.now().strftime("%m-%d-%Y %H:%M:%S")
     log_time = f"[{timestamp}] Action: {action}"
     if amount is not None:
@@ -65,8 +65,8 @@ while True:
 
     if userData:    
         userPin = int(input('Please enter your PIN: '))
-        if hash_pin(str(userPin)) == userData["pin"]:
-    
+        if hash_pin(str(userPin)) == userData["pin"]:    
+
             while True:
                 print('\n')
                 print('---------' * 5)
@@ -132,7 +132,8 @@ while True:
                             continue
 
                 elif action == '4': # view transaction history
-                    filename = f"{userData['accountNumber']}_records.txt"
+                    file_location = "C:\\Users\\orens\\Documents\\Coding Python\\ATM-Simulator"
+                    filename = os.path.join (file_location, f"{userAccountNumber}_records.txt")
                     if os.path.exists(filename):
                         with open(filename, "r") as file:
                             transaction_history = file.read()
@@ -149,11 +150,12 @@ while True:
                     print('Thank you!!')
                     break
                 else:
-                    print("Please input a valid response 1 to 4")
+                    print("Please input a valid response 1 to 5 only!!")
 
-            back = input("\nPress Enter to go back to the exit ...")
-            if back == '' :
-                continue   
+            if action != '5':
+                back = input("\nPress Enter to go back to the exit ...")
+                if back == '' :
+                    continue   
 
         else :        
             print('Incorrect PIN')
