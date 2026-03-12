@@ -156,9 +156,10 @@ while True:
                 else:
                     print("Please input a valid response 1 to 5 only!!")
 
-            back = input("\nPress Enter to go back to the exit ...")
-            if back == '' :
-                continue   
+            if action != '5':
+                back = input("\nPress Enter to go back to the exit ...")
+                if back == '' :
+                    continue   
 
         else :        
             print('Incorrect PIN')
