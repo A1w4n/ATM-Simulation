@@ -62,13 +62,15 @@ wb = openpyxl.load_workbook("C:\\Users\\orens\\Documents\\Coding Python\\ATM-Sim
 sheet = wb.active       
 
 # main program
+attempt_count = 0
+
 while True:
     print('---------' * 5)
-    userAccountNumber = int(input('\n\n\nPlease enter your account number: '))
+    userAccountNumber = input('\n\n\nPlease enter your account number: ')
     userData = dataCheck(userAccountNumber)
 
-    if userData:    
-        userPin = int(input('Please enter your PIN: '))
+    if userData and attempt_count !> 3:    
+        userPin = input('Please enter your PIN: ')
         if hash_pin(str(userPin)) == userData["pin"]:    
 
             while True:
@@ -163,8 +165,11 @@ while True:
 
         else :        
             print('Incorrect PIN')
+            break
     else:
         print('User not found!!')
+        attempt_count += 1
+        break
 
     back = input("\nPress Enter to go back to the exit ...")
     if back == '' :
